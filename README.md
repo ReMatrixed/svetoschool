@@ -1,0 +1,2 @@
+# svetoschool
+Многофункциональная платформа SvetoSchool
