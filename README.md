@@ -1,2 +1,2 @@
 <p align="center"><img src="https://raw.githubusercontent.com/ReMatrixed/MatrixedDocs/refs/heads/main/img/solarstorm-icon-rounded.svg" width=256></p>
-<h1 align="center">SolarStorm</h1><p align="center"><i>Многофункциональная информационная платформа</i></p>
+<h1 align="center">SvetoSchool</h1><p align="center"><i>Многофункциональная информационная платформа</i></p>
