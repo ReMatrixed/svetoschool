@@ -106,3 +106,7 @@ class DatabaseConnector:
             self.logger.info("Применение подготовительных изменений в базе данных...")
             await self.connection.commit() # Применение изменений
             self.logger.info("База данных готова.")
+    
+    # Добавить (обновить) запись в таблице users
+    async def update_user_data(self, user_data) -> None:
+        pass
