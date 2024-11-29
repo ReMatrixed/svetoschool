@@ -1,37 +1,52 @@
+# Подключение библиотеки для работы с датами
+from datetime import date
+
 # Подключение библиотеки для работы с data-классами
 from dataclasses import dataclass
-
-# Подключение необходимых перечислений
-from .enums import UserRole, SchoolSubject, TaskStatus
 
 # Сведения об зарегистрированном пользователе
 @dataclass
 class UserData:
-    chat_id: int = None
-    role: UserRole = UserRole.ROLE_USER
-    rating: int = 100
-    realname: str = "Неизвестно"
-    form: int = -1
-    city: str = "Неизвестен"
-    is_admin: bool = False
-    is_blocked: bool = False
+    chat_id: int
+    role: str
+    rating: int
+    realname: str
+    form: int
+    city: str
+    is_admin: bool
+    is_blocked: bool
 
 # Сведения об эксперте (member) чат-центра
 @dataclass
 class MemberData:
-    chat_id: int = None
-    subjects: list[str] = None
-    answers: int = 0
-    images: int = 0
-    videos: int = 0
-    status: str = 0
+    chat_id: int
+    subjects: list[str]
+    answers: int
+    images: int
+    videos: int
+    status: str
 
 # Сведения о пользовательском запросе
 @dataclass
 class TaskData:
-    chat_id: int = None
-    subject: str = SchoolSubject.SUBJECT_UNKNOWN.value
-    question: str = "Неизвестен"
-    priority: int = -1
-    status: TaskStatus = TaskStatus.TASK_PENDING
-    member: int = None
+    chat_id: int
+    subject: str
+    question: str
+    priority: int
+    status: str
+    member: int
+
+# Сведения о заблокированном пользователе
+@dataclass
+class BlockData:
+    chat_id: int
+    until: date
+    reason: str
+
+# Сведения о запросе на верификацию
+@dataclass
+class VerificationData:
+    chat_id: int
+    updated: date
+    status: str
+    reason: str
