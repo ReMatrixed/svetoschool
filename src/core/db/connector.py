@@ -11,7 +11,7 @@ from core.presets.datatypes import UserData
 # Подключение библиотеки логгирования
 import logging
 
-class DatabaseManager:
+class DatabaseConnector:
     connection: psycopg.Connection # Подключение к БД
     logger: logging.Logger # Обработчик журнала
 
