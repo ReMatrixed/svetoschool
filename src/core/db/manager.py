@@ -11,7 +11,7 @@ from core.presets.datatypes import UserData
 # Подключение библиотеки логгирования
 import logging
 
-class DatabaseConnector:
+class DatabaseManager:
     connection: psycopg.Connection # Подключение к БД
     logger: logging.Logger # Обработчик журнала
 
@@ -85,7 +85,7 @@ class DatabaseConnector:
     #   F(orm) - некорректные сведения о классе обучения,
     #   C(ity) - некорректные сведения о городе обучения,
     #   R(ealname) - некорректные данные о имени/фамилии,
-    #   S(chool) - пользователь не обучается в Светогорской Школе; 
+    #   S(chool) - некорректные данные о школе обучения.
  
     async def prepare_database(self) -> None:
         async with self.connection.cursor() as cur: 
