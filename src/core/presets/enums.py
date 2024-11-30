@@ -24,10 +24,10 @@ class VerificationStatus(Enum):
 
 # Доступные для использования причины отклонения запросов на верификацию
 class VerificationRejectReason(Enum):
-    INCORRECT_FORM = "F"  # Некорректные сведения о классе обучения
-    INCORRECT_CITY = "C" # Некорректные сведения о городе обучения
-    INCORRECT_REALNAME = "R"   # Некорректные сведения об имени/фамилии
-    INCORRECT_SCHOOL = "S" # Некорректные сведения о школе обучения (не Светогорская Школа)
+    INCORRECT_FORM = "F"     # Некорректные сведения о классе обучения
+    INCORRECT_CITY = "C"     # Некорректные сведения о городе обучения
+    INCORRECT_REALNAME = "R" # Некорректные сведения об имени/фамилии
+    INCORRECT_SCHOOL = "S"   # Некорректные сведения о школе обучения
     # Проверить, существует ли значение в данном перечислении
     @classmethod
     def is_exists(cls, key: str):
