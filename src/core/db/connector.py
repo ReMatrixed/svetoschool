@@ -59,7 +59,7 @@ class DatabaseConnector:
     #   P(ending) - запрос находится в очереди;
     # 7-й столбец (member) - ChatID эксперта, принявшего запрос (если запрос ещё не принят, то равняется NULL)
 
-    # Структура таблицы заблокированных пользователей (blocking):
+    # Структура таблицы заблокированных пользователей (blocks):
     # 1-й столбец (id) - идентификационный номер записи БД
     # 2-й столбец (chat_id) - ChatID пользователя в Telegram;
     # 3-й столбец (until) - дата, до которой пользователь считается заблокированным. 
@@ -71,11 +71,11 @@ class DatabaseConnector:
     #   R(equests) - чрезмерная отправка бессмысленных запросов;
 
     # Структура таблицы пользователей, личность и принадлежность к школе
-    # которых была подтверждена (verify). Такие пользователи могут использовать
+    # которых была подтверждена (verifications). Такие пользователи могут использовать
     # все школьные сервисы платформы в полной мере:
     # 1-й столбец (id) - идентификационный номер записи БД
     # 2-й столбец (chat_id) - ChatID пользователя в Telegram;
-    # 3-й столбец (date) - дата подачи запроса/регистрации;
+    # 3-й столбец (changed) - дата изменения статуса запроса/верификации;
     # 4-й столбец (status) - статус рассмотрения запроса, среди которых:
     #   P(ending) - запрос находится в очереди на рассмотрение,
     #   R(eview) - запрос на рассмотрении у администратора,
@@ -137,25 +137,25 @@ class DatabaseConnector:
                 """
             )
 
-            self.logger.info("Подготовка таблицы blocking...")
+            self.logger.info("Подготовка таблицы blocks...")
             await cur.execute(
                 """
-                CREATE TABLE IF NOT EXISTS blocking (
+                CREATE TABLE IF NOT EXISTS blocks (
                     id SERIAL PRIMARY KEY,
                     chat_id BIGINT NOT NULL UNIQUE,
-                    until DATE NOT NULL,
+                    until TIMESTAMP NOT NULL,
                     reason CHAR NOT NULL
                 )
                 """
             )
 
-            self.logger.info("Подготовка таблицы verify...")
+            self.logger.info("Подготовка таблицы verifications...")
             await cur.execute(
                 """
-                CREATE TABLE IF NOT EXISTS verify (
+                CREATE TABLE IF NOT EXISTS verifications (
                     id SERIAL PRIMARY KEY,
                     chat_id BIGINT NOT NULL UNIQUE,
-                    date DATE NOT NULL,
+                    changed TIMESTAMP NOT NULL,
                     status CHAR NOT NULL,
                     reason CHAR NOT NULL
                 )
