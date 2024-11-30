@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ReMatrixed/MatrixedDocs/refs/heads/main/img/solarstorm-icon-rounded.svg" width=256></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ReMatrixed/docs/refs/heads/main/img/svetoschool-logo.png" width=256 style="border-radius: 20%"></p>
 <h1 align="center">SvetoSchool</h1><p align="center"><i>Многофункциональная информационная платформа</i></p>
 
 # Начало работы
