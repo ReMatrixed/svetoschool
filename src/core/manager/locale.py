@@ -1,4 +1,4 @@
-# Подключение библиотеки для чтения JSON-файлов
+# Подключение библиотеки для работы с JSON-файлами
 import json
 from json.decoder import JSONDecodeError
 
