@@ -24,10 +24,12 @@ class LocaleManager:
         # Так как файл локализации (сообщения, тексты журнала) крайне важен,
         # программа завершает работу при возникновении ошибки чтения данного файла
         except FileNotFoundError:
-            self.logger.critical("")
+            self.logger.critical("Ошибка чтения файла с языковыми данными: Файл не найден")
+            self.logger.info("Завершение работы...")
             sys.exit() # Безопасное завершение работы программы
         except JSONDecodeError as e:
-            self.logger.critical("")
+            self.logger.critical(f"Ошибка JSON-парсинга файла с языковыми данными: ({e})")
+            self.logger.info("Завершение работы...")
             sys.exit() # Безопасное завершение работы программы
 
         self.logger.info(f"Чтение файла цензуры (мат-фильтр) ({blacklist_filepath})...")
@@ -37,8 +39,9 @@ class LocaleManager:
         # Так как фильтр цензуры достаточно важен, программа завершает
         # свою работу при возникновении ошибки чтения данного файла
         except FileNotFoundError:
-            self.logger.error("")
-            sys.exit()
+            self.logger.critical("Ошибка чтения цензор-файла: Файл не найден")
+            self.logger.info("Завершение работы...")
+            sys.exit() # Безопасное завершение работы программы
         self.logger.info("Обработчик языковых данных инициализирован.")
 
     # Получить значение из словаря по ключу
