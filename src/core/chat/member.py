@@ -6,3 +6,6 @@ from aiogram.fsm.context import FSMContext
 
 # Подключение core-библиотек
 from core.db.connector import DatabaseConnector
+
+# Инициализация Router'а для пользователей-экспертов
+router_member = Router()
