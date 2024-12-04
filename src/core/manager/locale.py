@@ -14,12 +14,16 @@ class LocaleManager:
     logger: logging.Logger # Обработчик журнала (логгер)
 
     # Инициализация обработчика, чтение языковых данных
-    def setup(self, locale_filepath: str, blacklist_filepath) -> None:
+    def setup(self, resources_filepath: str) -> None:
+        # Сборка пути до языковых файлов
+        filepath_locale = f"{resources_filepath}/locale.json"
+        filepath_blacklist = f"{resources_filepath}/blacklist.txt"
+        
         self.logger = logging.getLogger("manager/locale.py")
         self.logger.info("Подготовка обработчика языковых данных...")
-        self.logger.info(f"Чтение файла локализации: {locale_filepath}...")
+        self.logger.info(f"Чтение файла локализации: {filepath_locale}...")
         try:
-            with open(locale_filepath, "r") as locale_file:
+            with open(filepath_locale, "r") as locale_file:
                 self.locale = json.load(locale_file)
         # Так как файл локализации (сообщения, тексты журнала) крайне важен,
         # программа завершает работу при возникновении ошибки чтения данного файла
@@ -32,9 +36,9 @@ class LocaleManager:
             self.logger.info("Завершение работы...")
             sys.exit() # Безопасное завершение работы программы
 
-        self.logger.info(f"Чтение файла цензуры (мат-фильтр) ({blacklist_filepath})...")
+        self.logger.info(f"Чтение файла цензуры (мат-фильтр) ({filepath_blacklist})...")
         try:
-            with open(blacklist_filepath, "r") as blacklist_file:
+            with open(filepath_blacklist, "r") as blacklist_file:
                 self.blacklist = blacklist_file.read().splitlines()
         # Так как фильтр цензуры достаточно важен, программа завершает
         # свою работу при возникновении ошибки чтения данного файла
