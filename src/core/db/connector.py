@@ -87,7 +87,7 @@ class DatabaseConnector:
     #   R(ealname) - некорректные данные о имени/фамилии,
     #   S(chool) - некорректные данные о школе обучения.
  
-    async def prepare_database(self) -> None:
+    async def prepare(self) -> None:
         async with self.connection.cursor() as cur: 
             self.logger.info("Подготовка базы данных...")
             self.logger.info("Подготовка таблицы users...")
