@@ -2,7 +2,6 @@
 import psycopg
 
 # Подключение внутренних компонентов модуля
-from core.db.validation import IpModel
 from core.db.exceptions import UserNotFound, MemberNotFound, TaskNotFound
 
 # Подключение модуля типов данных
@@ -20,7 +19,7 @@ class DatabaseConnector:
         self, host: str, port: int, username: str, password: str, dbname: str
     ):
         self.connection = await psycopg.AsyncConnection.connect(
-            f"host={IpModel(ip = host)} port={port} user={username} password={password} dbname={dbname}"
+            f"host={host} port={port} user={username} password={password} dbname={dbname}"
         )
 
     # ИНИЦИАЛИЗАЦИЯ ТАБЛИЦ БАЗЫ ДАННЫХ
