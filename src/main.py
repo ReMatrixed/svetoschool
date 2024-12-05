@@ -24,7 +24,7 @@ locale_manager = LocaleManager()
 db_connector = DatabaseConnector()
 
 # Инициализация обработчика языковых данных и обработчика конфигураций
-config_manager.setup(".env")
+config_manager.setup()
 locale_manager.setup(f"resources/{config_manager.get("LANGUAGE")}")
 
 # Инициализация хранилища FSM, подключение к Redis
