@@ -194,3 +194,9 @@ class DatabaseConnector:
                     user_data.is_blocked
                 ]
             )
+
+    # Отключиться от базы данных    
+    async def close(self) -> None:
+        self.logger.info("Отключение от базы данных...")
+        await self.connection.close()
+        self.logger.info("База данных отключена.")

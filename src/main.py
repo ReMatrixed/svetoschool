@@ -85,6 +85,9 @@ async def prepare_services():
     # Подготовка таблиц базы данных
     await db_connector.prepare()
 
+    # Отключение от базы данных
+    await db_connector.close()
+
 # Начальная точка запуска программы
 if __name__ == "__main__":
     asyncio.run(prepare_services())
