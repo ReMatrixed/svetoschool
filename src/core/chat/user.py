@@ -5,7 +5,7 @@ from aiogram.filters import StateFilter, Command
 from aiogram.fsm.context import FSMContext
 
 # Подключение core-библиотек
-from core.db.connector import DatabasConnector
+from core.db.connector import DatabaseConnector
 
 # Инициализация Router'а для обычных пользователей
 router_user = Router()
