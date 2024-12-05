@@ -18,6 +18,21 @@ from aiogram.fsm.storage.redis import RedisStorage, Redis
 # Подключение внутренней библиотеки asyncio для работы с корутинами (corutines)
 import asyncio
 
+# Подключение библиотеки логгирования
+import logging
+
+# Настройка обработчика журнала (логгера)
+logging.basicConfig(
+    filename = "logs/solarstorm.log", 
+    encoding = "utf-8",
+    level = logging.INFO,
+    format = "%(asctime)s %(levelname)s:%(name)-10s | %(message)s",
+    datefmt = "%d-%m-%Y %H:%M:%S"
+)
+logger = logging.getLogger("main.py")
+logger.info("==========================")
+logger.info("Запуск бота SvetoSchool...")
+
 # Создание экземпляров классов обработчиков
 config_manager = ConfigManager()
 locale_manager = LocaleManager()
@@ -61,7 +76,7 @@ async def prepare_services():
         port = config_manager.get("POSTGRES_PORT"),
         username = config_manager.get("POSTGRES_USER"),
         password = config_manager.get("POSTGRES_PASSWORD"),
-        dbname = config_manager.get("POSTGRES_DBNAME")
+        dbname = config_manager.get("POSTGRES_DB")
     )
 
     # Запуск задач-демонов
