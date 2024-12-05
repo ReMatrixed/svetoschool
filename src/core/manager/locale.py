@@ -19,7 +19,7 @@ class LocaleManager:
         filepath_locale = f"{resources_filepath}/locale.json"
         filepath_blacklist = f"{resources_filepath}/blacklist.txt"
         
-        self.logger = logging.getLogger("manager/locale.py")
+        self.logger = logging.getLogger("locale.py")
         self.logger.info("Подготовка обработчика языковых данных...")
         self.logger.info(f"Чтение файла локализации: {filepath_locale}...")
         try:
