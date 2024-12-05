@@ -78,12 +78,11 @@ async def prepare_services():
         password = config_manager.get("POSTGRES_PASSWORD"),
         dbname = config_manager.get("POSTGRES_DB")
     )
+    # Подготовка таблиц базы данных
+    await db_connector.prepare()
 
     # Запуск задач-демонов
     await asyncio.gather(bot_dispatcher.start_polling(bot))
-
-    # Подготовка таблиц базы данных
-    await db_connector.prepare()
 
     # Отключение от базы данных
     await db_connector.close()
