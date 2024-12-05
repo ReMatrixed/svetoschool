@@ -3,6 +3,7 @@ from aiogram.fsm.state import State, StatesGroup
 
 # Состояния FSM, предназначенные для общения с пользователем (role: user)
 class UserContext(StatesGroup):
+    setup_welcome = State() # Запрос разрешения на получения данных о пользователе
     setup_form = State() # Запрос номера класса обучения
     setup_city = State() # Запрос названия города проживания
     setup_optional_data = State() # Запрос на сбор дополнительных данных
