@@ -49,7 +49,7 @@ bot_dispatcher.include_router(router_user)
 bot_dispatcher.include_router(router_common)
 # Настройка параметров бота (API-ключ, режим форматирования)
 bot = Bot(
-    config_manager.get("BOT_API_KEY"),
+    config_manager.get("TELEGRAM_BOT_API_KEY"),
     default = DefaultBotProperties(parse_mode = ParseMode.HTML)
 )
 
