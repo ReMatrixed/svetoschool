@@ -18,9 +18,12 @@ class DatabaseConnector:
     async def connect(
         self, host: str, port: int, username: str, password: str, dbname: str
     ):
+        self.logger = logging.getLogger("connector.py")
+        self.logger.info("Подключение к базе данных...")
         self.connection = await psycopg.AsyncConnection.connect(
             f"host={host} port={port} user={username} password={password} dbname={dbname}"
         )
+        self.logger.info("Соединение с базой данных установлено.")
 
     # ИНИЦИАЛИЗАЦИЯ ТАБЛИЦ БАЗЫ ДАННЫХ
     # Структура таблицы пользователей (users):
@@ -88,7 +91,7 @@ class DatabaseConnector:
  
     async def prepare(self) -> None:
         async with self.connection.cursor() as cur: 
-            self.logger.info("Подготовка базы данных...")
+            self.logger.info("Подготовка таблиц базы данных...")
             self.logger.info("Подготовка таблицы users...")
             await cur.execute(
                 """
@@ -100,7 +103,7 @@ class DatabaseConnector:
                     form SMALLINT NOT NULL,
                     city TEXT NOT NULL,
                     realname TEXT NOT NULL,
-                    is_admin BOOL NOT NULL
+                    is_admin BOOL NOT NULL,
                     is_blocked BOOL NOT NULL
                 );
                 """
