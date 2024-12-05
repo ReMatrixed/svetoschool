@@ -16,13 +16,13 @@ class ConfigManager:
 
     # Инициализация обработчика с использованием системных переменных среды (docker environment, например)
     def setup(self) -> None:
-        self.logger = logging.getLogger("manager/config.py")
+        self.logger = logging.getLogger("config.py")
         self.logger.info("Подготовка обработчика конфигураций (режим: классический)...")
         self.logger.info("Обработчик конфигураций инициализирован.")
 
     # Инициализация обработчика с использованием файла .env
     def setup_env(self, filepath: str) -> None:
-        self.logger = logging.getLogger("manager/config.py")
+        self.logger = logging.getLogger("config.py")
         self.logger.info("Подготовка обработчика конфигураций (режим: dotenv)...")
         self.logger.info(f"Чтение файла переменных среды: {filepath}...")
         if(load_dotenv(filepath) == False):
