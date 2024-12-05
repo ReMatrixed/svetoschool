@@ -1,0 +1,71 @@
+networks:
+  svetoschool-internal:
+    name: svetoschool-internal
+
+services:
+  postgres-db:
+    image: postgres:alpine
+    container_name: postgres-db
+    restart: always
+    networks:
+      - svetoschool-internal
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    shm_size: 256MB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USERNAME -d $POSTGRES_DBNAME"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    env_file:
+      - config.env
+
+  postgres-admin:
+    image: adminer
+    container_name: postgres-admin
+    restart: always
+    networks:
+      - svetoschool-internal
+    ports:
+      - 9999:8080
+    depends_on:
+      - postgres-db
+
+  redis-db:
+    image: redis:alpine
+    container_name: redis-db
+    restart: always
+    command: ["redis-server", "/etc/redis/redis.conf"]
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
+    networks:
+      - svetoschool-internal
+    ports:
+      - 6379:6379
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    env_file:
+      - config.env
+
+  svetoschool-bot:
+    build: ..
+    container_name: svetoschool-bot
+    restart: always
+    networks:
+      - svetoschool-internal
+    volumes:
+      - ./logs:/app/logs
+    env_file:
+      - config.env
+    depends_on:
+      - postgres-db
+      - redis-db
