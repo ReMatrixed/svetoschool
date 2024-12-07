@@ -15,7 +15,7 @@ from core.manager.locale import LocaleManager
 from core.presets.states import UserContext, MemberContext
 from core.presets.keyboard import ReplyKeyboard
 from core.presets.datatypes import UserData, TaskData
-from core.presets.enums import UserRole, DatabaseTable, TaskStatus
+from core.presets.enums import UserRole, DatabaseTable, TaskStatus, MemberStatus
 
 # Подключение встроенных библиотек
 import re
@@ -133,7 +133,7 @@ async def get_user_question(
 # Handler для команды об отмене запроса (task)
 @router_user.message(Command("cancel_request"), StateFilter(UserContext.dialog_wait))
 async def cancel_user_request(
-    message: types.Message, state: FSMContext,
+    message: types.Message, state: FSMContext, bot: Bot,
     locale: LocaleManager, db_connector: DatabaseConnector
 ):
     try:
@@ -143,9 +143,11 @@ async def cancel_user_request(
             await message.reply(locale.get("request.user.cancel.success"))
             await state.set_state(UserContext.dialog_question)
         elif(task_data.status == TaskStatus.TASK_DELEGATED.value):
-            # TODO: Добавить оповещение исполнителю об отмене запроса,
-            # а также запросить подтверждение у пользователя (необязательно)
-            pass
+            await bot.send_message(task_data.member, locale.get("request.user.was_canceled"))
+            await db_connector.set_member_status(task_data.member, MemberStatus.MEMBER_AVAILABLE)
+            await db_connector.delete(message.from_user.id, DatabaseTable.TABLE_TASKS)
+            await message.reply(locale.get("request.user.cancel.success"))
+            await state.set_state(UserContext.dialog_question)
         elif(task_data.status == TaskStatus.TASK_ACCEPTED.value):
             # TODO: Добавить оповещение в диалоге об отмене запроса,
             # запросить подтверждение у пользователя,
