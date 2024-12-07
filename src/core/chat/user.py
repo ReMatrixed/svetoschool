@@ -174,9 +174,9 @@ async def get_question_subject(
         TaskData(
             chat_id = callback.from_user.id,
             subject = callback.data.replace("callback_subject_", "").upper()[0],
-            priority = 0,
             question = fsm_data.get("question"),
-            status = TaskStatus.TASK_PENDING,
+            priority = 0,
+            status = TaskStatus.TASK_PENDING.value,
             member = 0
         )
     )
