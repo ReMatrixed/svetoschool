@@ -72,7 +72,7 @@ async def get_member_dialog_permission(
         )
     )
     user_data = await db_connector.get_user(callback.from_user.id)
-    member_choice = callback.data.replace("callback_selection_")
+    member_choice = callback.data.replace("callback_selection_", "")
     if(member_choice == "accept"):
         await callback.message.answer(locale.get("dialog.member.permission.accept"))
         await db_connector.set_task_status(fsm_data.get("user_id"), TaskStatus.TASK_ACCEPTED)
