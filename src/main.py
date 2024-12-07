@@ -53,15 +53,14 @@ fsm_storage = RedisStorage(
 # Инициализация корневого Router'а (Dispatcher ), передача contextual-аргументов
 bot_dispatcher = Dispatcher(
     storage = fsm_storage,
-    config_manager = config_manager,
-    locale_manager = locale_manager,
+    locale = locale_manager,
     db_connector = db_connector
 )
 # Добавление role-specific Router'ов в корневой Router
+bot_dispatcher.include_router(router_common)
 bot_dispatcher.include_router(router_admin)
 bot_dispatcher.include_router(router_member)
 bot_dispatcher.include_router(router_user)
-bot_dispatcher.include_router(router_common)
 # Настройка параметров бота (API-ключ, режим форматирования)
 bot = Bot(
     config_manager.get("TELEGRAM_BOT_API_KEY"),
