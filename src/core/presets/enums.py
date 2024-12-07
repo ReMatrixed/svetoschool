@@ -78,6 +78,7 @@ class SchoolSubject(Enum):
     SUBJECT_INFORMATICS = "I"
     SUBJECT_GEOGRAPHY = "G"
     SUBJECT_UNKNOWN = "X"
+    SUBJECT_FUNCTIONALITY = "F" # Тех. поддержка
     # Проверить, существует ли значение в данном перечислении
     @classmethod
     def is_exists(cls, key: str):
@@ -95,7 +96,8 @@ class Namer():
         "H": "История",
         "S": "Обществознание",
         "R": "Русский язык",
-        "E": "Английский язык"
+        "E": "Английский язык",
+        "F": "Тех. поддержка"
     }
 
     member_status = {
