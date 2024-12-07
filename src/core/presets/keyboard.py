@@ -7,9 +7,19 @@ class ReplyKeyboard:
     selection_simple = types.InlineKeyboardMarkup(
         inline_keyboard = [
             [
-                types.InlineKeyboardButton(text="Да ✅", callback_data="callback_selection_y"),
-                types.InlineKeyboardButton(text="Нет ❌", callback_data="callback_selection_n")
+                types.InlineKeyboardButton(text = "✅ Да", callback_data = "callback_selection_y"),
+                types.InlineKeyboardButton(text = "❌ Нет", callback_data = "callback_selection_n")
             ]
+        ]
+    )
+
+    selection_request_acception = types.InlineKeyboardMarkup(
+        inline_keyboard = [
+            [
+                types.InlineKeyboardButton(text = "✅ Принять", callback_data = "callback_selection_accept"),
+                types.InlineKeyboardButton(text = "❌ Отклонить", callback_data = "callback_selection_decline")
+            ],
+            [types.InlineKeyboardButton(text = "🔑 Передать", callback_data = "callback_selection_transfer")]
         ]
     )
 
