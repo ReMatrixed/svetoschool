@@ -307,10 +307,9 @@ class DatabaseConnector:
     async def delete(self, chat_id: int, table: DatabaseTable) -> None:
         async with self.connection.cursor() as cur:
             await cur.execute(
-                """
-                DELETE FROM %s WHERE chat_id = %s
-                """,
-                [table, chat_id]
+                sql.SQL("DELETE FROM {table_name} WHERE chat_id = %s")
+                    .format(table_name = sql.Identifier(table.value)),
+                [chat_id]
             )
             await self.connection.commit()
 
