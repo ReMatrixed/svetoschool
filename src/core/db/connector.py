@@ -230,15 +230,15 @@ class DatabaseConnector:
                 INSERT INTO users (
                     chat_id, role, rating, form, city, realname, is_admin, is_blocked
                 ) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (chat_id) DO UPDATE SET
-                    role = EXCLUDED.role
-                    rating = EXLUDED.rating
-                    form = EXCLUDED.form
-                    city = EXCLUDED.city
-                    realname = EXCLUDED.realname
-                    is_admin = EXCLUDED.is_admin
-                    is_blocked = EXLUDED.is_blocked
+                    role = EXCLUDED.role,
+                    rating = EXCLUDED.rating,
+                    form = EXCLUDED.form,
+                    city = EXCLUDED.city,
+                    realname = EXCLUDED.realname,
+                    is_admin = EXCLUDED.is_admin,
+                    is_blocked = EXCLUDED.is_blocked
                 """,
                 [
                     user_data.chat_id,
@@ -251,6 +251,7 @@ class DatabaseConnector:
                     user_data.is_blocked
                 ]
             )
+            await self.connection.commit()
 
     # Добавить (обновить) запись в таблице members
     async def update_member(self, member_data: MemberData) -> None:
@@ -377,11 +378,12 @@ class DatabaseConnector:
     async def exists(self, chat_id: int, table: DatabaseTable) -> bool:
         async with self.connection.cursor() as cur:
             await cur.execute(
-                sql.SQL("SELECT EXISTS(SELECT {table_name} WHERE chat_id = %s)")
+                sql.SQL("SELECT EXISTS(SELECT 1 FROM {table_name} WHERE chat_id = %s)")
                     .format(table_name = sql.Identifier(table.value)),
                 [chat_id]
             )
-            return await cur.fetchone()
+            data = await cur.fetchone()
+            return data[0]
 
     # Отключиться от базы данных    
     async def close(self) -> None:
