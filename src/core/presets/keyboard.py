@@ -44,6 +44,9 @@ class ReplyKeyboard:
             ],
             [
                 types.InlineKeyboardButton(text = "🎩 Английский язык", callback_data = "callback_subject_english")
+            ],
+            [
+                types.InlineKeyboardButton(text = "🛠 Тех. поддержка", callback_data = "callback_subject_functionality")
             ]
         ]
     )
