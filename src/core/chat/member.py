@@ -37,7 +37,7 @@ async def stop_member_dialog(
             locale.get("dialog.user.was_stopped_by_member")
         )
     except aiogram.exceptions.TelegramBadRequest:
-            logger.warning(locale.get("logger.warning.missing_user").replace("$$1", str(fsm_data.get("user_id"))))
+        logger.warning(locale.get("logger.warning.missing_user").replace("$$1", str(fsm_data.get("user_id"))))
     user_state = FSMContext(
         fsm_storage, 
         StorageKey(
@@ -50,6 +50,7 @@ async def stop_member_dialog(
     await user_state.set_state(UserContext.dialog_rate)
     await state.set_state(MemberContext.dialog_rate)
     await db_connector.delete(fsm_data.get("user_id"), DatabaseTable.TABLE_TASKS)
+    await db_connector.set_member_status(message.from_user.id, MemberStatus.MEMBER_AVAILABLE)
 
 # Handler для ответа на вопрос об принятии пользовательского запроса экспертом
 # TODO: Обновить блок кода с использованием try-except
