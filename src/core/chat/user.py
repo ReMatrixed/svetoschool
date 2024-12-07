@@ -209,7 +209,7 @@ async def stop_user_dialog(
     await message.reply(locale.get("dialog.user.stop"))
     await member_state.set_state(MemberContext.dialog_rate)
     await state.set_state(UserContext.dialog_rate)
-    await db_connector.delete(DatabaseTable.TABLE_TASKS, message.from_user.id)
+    await db_connector.delete(message.from_user.id, DatabaseTable.TABLE_TASKS)
 
 # Handler для передачи сообщений от пользователя к эксперту во время диалога
 @router_user.message(StateFilter(UserContext.dialog_proceed))
