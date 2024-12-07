@@ -406,7 +406,7 @@ class DatabaseConnector:
         async with self.connection.cursor() as cur:
             await cur.execute(
                 """
-                SELECT * FROM users WHERE chat_id IN (
+                SELECT chat_id FROM users WHERE chat_id IN (
                     SELECT chat_id FROM members WHERE (
                         %s = ANY(subjects) AND status = %s
                     )
