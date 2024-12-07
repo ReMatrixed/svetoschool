@@ -109,9 +109,9 @@ async def get_member_dialog_permission(
 async def proceed_member_dialog(message: types.Message, state: FSMContext, bot: Bot, locale: LocaleManager):
     fsm_data = await state.get_data()
     try:
-        await bot.send_message(fsm_data.get("user_id"), message.md_text, parse_mode = ParseMode.MARKDOWN_V2)
+        await bot.copy_message(fsm_data.get("user_id"), message.from_user.id, message.message_id, parse_mode = ParseMode.MARKDOWN_V2)
     except aiogram.exceptions.TelegramBadRequest:
-            logger.warning(locale.get("logger.warning.missing_user").replace("$$1", str(fsm_data.get("user_id"))))
+        logger.warning(locale.get("logger.warning.missing_user").replace("$$1", str(fsm_data.get("user_id"))))
 
 # Handler для ответа на оценку пользователя экспертом
 @router_member.message(StateFilter(MemberContext.dialog_rate))

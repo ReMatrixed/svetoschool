@@ -213,9 +213,12 @@ async def stop_user_dialog(
 
 # Handler для передачи сообщений от пользователя к эксперту во время диалога
 @router_user.message(StateFilter(UserContext.dialog_proceed))
-async def proceed_user_dialog(message: types.Message, state: FSMContext, bot: Bot):
+async def proceed_user_dialog(message: types.Message, state: FSMContext, bot: Bot, locale: LocaleManager):
     fsm_data = await state.get_data()
-    await bot.send_message(fsm_data.get("user_id"), message.md_text, parse_mode = ParseMode.MARKDOWN_V2)
+    try:
+        await bot.copy_message(fsm_data.get("user_id"), message.from_user.id, message.message_id, parse_mode = ParseMode.MARKDOWN_V2)
+    except aiogram.exceptions.TelegramBadRequest:
+        logger.warning(locale.get("logger.warning.missing_user").replace("$$1", str(fsm_data.get("user_id"))))
 
 # Handler для ответа на пользовательскую оценку деятельности эксперта
 @router_user.message(StateFilter(UserContext.dialog_rate))
