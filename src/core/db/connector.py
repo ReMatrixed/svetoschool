@@ -335,7 +335,7 @@ class DatabaseConnector:
             await self.connection.commit()
 
     # Изменить предметы (столбец subjects) эксперта в таблице members
-    async def set_member_subjects(self, chat_id: int, subjects: list[str]):
+    async def set_member_subjects(self, chat_id: int, subjects: list[str]) -> None:
         async with self.connection.cursor() as cur:
             await cur.execute(
                 """
@@ -346,7 +346,7 @@ class DatabaseConnector:
             await self.connection.commit()
 
     # Изменить роль пользователя в таблице users
-    async def set_user_role(self, chat_id: int, role: UserRole):
+    async def set_user_role(self, chat_id: int, role: UserRole) -> None:
         async with self.connection.cursor() as cur:
             await cur.execute(
                 """
@@ -359,7 +359,7 @@ class DatabaseConnector:
     # Найти chat_id пользователя по его имени/фамилии
     # TODO: Интегрировать cur.fetchmany(), добавить функцию для получения
     # количества доступных записей?
-    async def search_users(self, realname: str) -> int:
+    async def search_users(self, realname: str) -> list[int]:
         async with self.connection.cursor() as cur:
             await cur.execute(
                 """
