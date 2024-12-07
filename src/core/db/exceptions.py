@@ -37,3 +37,24 @@ class TaskNotFound(EntryNotFound):
     Args:
         msg (str): Message of the exception
     """
+
+class SelectionError(DatabaseException):
+    """Exception raised when there is no selectable values in the table.
+
+    Args:
+        msg (str): Message of the exception
+    """
+
+class TaskSelectionError(SelectionError):
+    """Exception raised when there is no selectable tasks.
+
+    Args:
+        msg (str): Message of the exception
+    """
+
+class MemberSelectionError(SelectionError):
+    """Exception raised when there is no selectable members.
+
+    Args:
+        msg (str): Message of the exception
+    """

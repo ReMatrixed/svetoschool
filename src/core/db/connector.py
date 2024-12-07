@@ -4,10 +4,11 @@ from psycopg import sql
 
 # Подключение внутренних компонентов модуля
 from core.db.exceptions import UserNotFound, MemberNotFound, TaskNotFound
+from core.db.exceptions import MemberSelectionError, TaskSelectionError
 
 # Подключение модуля типов данных
 from core.presets.datatypes import UserData, MemberData, TaskData, BlockData, VerificationData
-from core.presets.enums import DatabaseTable, TaskStatus, MemberStatus, UserRole
+from core.presets.enums import DatabaseTable, TaskStatus, MemberStatus, UserRole, SchoolSubject
 
 # Подключение библиотеки логгирования
 import logging
@@ -180,10 +181,11 @@ class DatabaseConnector:
                     chat_id = available_data[1],
                     role = available_data[2],
                     rating = available_data[3],
-                    realname = available_data[4],
-                    form = available_data[5],
-                    city = available_data[6],
-                    is_admin = available_data[7]
+                    form = available_data[4],
+                    city = available_data[5],
+                    realname = available_data[6],
+                    is_admin = available_data[7],
+                    is_blocked = available_data[8]
                 )
             else:
                 raise UserNotFound(f"Unknown chat_id: {chat_id}")
@@ -367,11 +369,11 @@ class DatabaseConnector:
                 """,
                 [f"%{realname}%"]
             )
-            data = await cur.fetchall()
-            if(data == None):
+            available_data = await cur.fetchall()
+            if(available_data == None):
                 raise UserNotFound(f"Unknown realname: {realname}")
             else:
-                return data
+                return available_data
             
     # Узнать, существует ли запись в базе данных (любая таблица)
     async def exists(self, chat_id: int, table: DatabaseTable) -> bool:
@@ -381,8 +383,42 @@ class DatabaseConnector:
                     .format(table_name = sql.Identifier(table.value)),
                 [chat_id]
             )
-            data = await cur.fetchone()
-            return data[0]
+            available_data = await cur.fetchone()
+            return available_data[0]
+        
+    # Найти доступную задачу с выбранными предметом и статусом, отсортировать по приоритету
+    async def select_task(self, subject: SchoolSubject, status: TaskStatus) -> int:
+        async with self.connection.cursor() as cur:
+            await cur.execute(
+                """
+                SELECT chat_id FROM tasks WHERE (status = %s AND subject = %s)
+                ORDER BY priority DESC
+                """,
+                [status.value, subject.value]
+            )
+            available_data = await cur.fetchone()
+            if(available_data != None):
+                return available_data[0]
+            else:
+                raise TaskSelectionError
+        
+    async def select_member(self, subject: SchoolSubject, status: MemberStatus) -> int:
+        async with self.connection.cursor() as cur:
+            await cur.execute(
+                """
+                SELECT * FROM users WHERE chat_id IN (
+                    SELECT chat_id FROM members WHERE (
+                        %s = ANY(subjects) AND status = %s
+                    )
+                ) ORDER BY rating DESC
+                """,
+                [subject.value, MemberStatus.MEMBER_AVAILABLE.value]
+            )
+            available_data = await cur.fetchone()
+            if(available_data != None):
+                return available_data[0]
+            else:
+                raise MemberSelectionError
 
     # Отключиться от базы данных    
     async def close(self) -> None:
